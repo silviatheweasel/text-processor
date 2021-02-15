@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import { InputBox } from "../InputBox/InputBox";
 
 export class App extends React.Component {
   constructor(props) {
@@ -43,9 +44,8 @@ export class App extends React.Component {
     document.getElementById("convertedText").innerHTML = "";
   }
 
-  handleTextAreaChange(event) {
-    const text = event.target.value;
-    this.setState({ inputText: text });
+  handleTextAreaChange(inputText) {
+    this.setState({ inputText: inputText });
     document.getElementById("processingMethods").value = "default";
   }
 
@@ -70,40 +70,21 @@ export class App extends React.Component {
       }      
     }   
   }
-  
-  // handleClick() {
-  //   if (this.state.inputText === "") {
-  //     alert("The input box is empty")
-  //   }
-  //   if (document.getElementById("processingMethods").value === "default") {
-  //     alert("Please choose a valid processing method");
-  //     document.getElementById("convertedText").innerHTML = "";
-  //   } else 
-  //     {return document.getElementById("convertedText").innerHTML = this.state.outputText;
-  //   }
-  // }
 
   render() {
     return (
       <div className="App">
         <label htmlFor="inputText">Paste or type your text below:</label>
+
         <br></br>
-        <div className="textBox">
-          <textarea id="inputText"
-                    name="inputText"
-                    rows="5"
-                    cols="60"
-                    placeholder="type here..."
-                    onChange={this.handleTextAreaChange.bind(this)}
-          >
-          </textarea>
-          {this.state.inputText !== "" && <button className="clearTextBtn" 
-                                                  onClick={this.clearText.bind(this)}
-                                          ><i className="fas fa-times"></i>
-                                          </button>
-                                          }
-        </div>
+
+        <InputBox inputText={this.state.inputText} 
+                  clearText={this.clearText.bind(this)}
+                  handleInputText={this.handleTextAreaChange.bind(this)}
+        />
+        
         <br></br>
+
         <label htmlFor="processingMethods">Choose how to process the text:</label>
         <div className="selectBox">
           <select name="processingMethods"
@@ -115,15 +96,14 @@ export class App extends React.Component {
             <option value="lowercase">convert the text to lower case</option>
             <option value="uppercase">CONVERT THE TEXT TO UPPER CASE</option>
           </select>
-          {/* <button onClick={this.handleClick.bind(this)}>Convert</button> */}
         </div>
-        <div className="textBox">
+        <form className="textBox">
           <p id="convertedText"></p>
           {this.state.outputText !== "" && <button onClick={this.clearText.bind(this)} 
                                                    className="clearTextBtn" 
                                             ><i className="fas fa-times"></i>
                                             </button>}
-        </div>
+        </form>
         
       </div>
     );
