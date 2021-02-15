@@ -4,7 +4,7 @@ import './App.css';
 export class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { text: "Hello world" }
+    this.state = { text: "" }
   }
 
   toLowerCase() {
@@ -17,21 +17,44 @@ export class App extends React.Component {
     this.setState({ text: text }); 
   }
 
-  handleTextAreaChange(event) {
-    const text = event.target.value;
+  capitalizeEachWord() {
+    const text = this.state.text.toLowerCase()
+                                .split(" ")
+                                .map(word => word.charAt(0).toUpperCase() + word.substring(1))
+                                .join(" ");
     this.setState({ text: text });
   }
 
+  handleTextAreaChange(event) {
+    const text = event.target.value;
+    this.setState({ text: text });
+    document.getElementById("processingMethods").value = "default";
+  }
+
   handleSelectChange(event) {
-    if (event.target.value === "lowercase") {
-      this.toLowerCase();
-    } else if (event.target.value === "uppercase") {
-      this.toUpperCase();
+    switch(event.target.value) {
+      case "lowercase":
+        this.toLowerCase();
+        break;
+      case "uppercase":
+        this.toUpperCase();
+        break;
+      case "capitalise": 
+        this.capitalizeEachWord();
+        break;
+      default: alert("Please choose a valid processing method");
     }
   }
   
   handleClick() {
-    return document.getElementById("convertedText").innerHTML = this.state.text;
+    if (this.state.text === "") {
+      alert("The input box is empty")
+    }
+    if (document.getElementById("processingMethods").value === "default") {
+      alert("Please choose a valid processing method");
+      document.getElementById("convertedText").innerHTML = "";
+    } else 
+      {return document.getElementById("convertedText").innerHTML = this.state.text;}
   }
 
   render() {
@@ -42,8 +65,8 @@ export class App extends React.Component {
         <textarea id="inputText"
                   name="inputText"
                   rows="5"
-                  cols="50"
-                  // value={this.state.text}
+                  cols="60"
+                  placeholder="type here..."
                   onChange={this.handleTextAreaChange.bind(this)}
         >
         </textarea>
@@ -53,7 +76,8 @@ export class App extends React.Component {
                 id="processingMethods"
                 onChange={this.handleSelectChange.bind(this)}
         >
-          {/* <option value="capitalise">Capitalise the First Letter of Each Word</option> */}
+          <option value="default"> -- choose a processing method below --</option>
+          <option value="capitalise">Capitalise the First Letter of Each Word</option>
           <option value="lowercase">convert the text to lower case</option>
           <option value="uppercase">CONVERT THE TEXT TO UPPER CASE</option>
         </select>
@@ -63,4 +87,3 @@ export class App extends React.Component {
     );
   }
 }
-
