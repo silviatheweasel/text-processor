@@ -1,0 +1,21 @@
+.selectBox {
+    margin-bottom: 40px;
+  }
+  
+select {
+    background-color: #fca311;
+    color: black;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    margin-right: 15px;
+    margin-top: 10px;
+    text-align: center;
+    cursor: pointer;
+    font-family: Poppins, sans-serif;
+}
+
+select:focus {
+    outline: none;
+}
