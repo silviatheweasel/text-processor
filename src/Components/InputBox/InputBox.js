@@ -16,6 +16,11 @@ export class InputBox extends React.Component {
         this.props.countRemainingChars(inputText);
     }
 
+    handleInput(event) {
+        const field = event.target;
+        this.props.autoExpand(field);
+    }
+
     render() {
         return (<form className="textBox">
                     <textarea   id="inputText"
@@ -23,12 +28,13 @@ export class InputBox extends React.Component {
                                 rows="5"
                                 cols="60"
                                 placeholder="type here..."
-                                maxLength="500"
+                                maxLength="2000"
                                 onChange={this.handleChange.bind(this)}
                                 onKeyUp={this.handleKeyup.bind(this)}
+                                onInput={this.handleInput.bind(this)}
                     >
                     </textarea>
-                    <div id="charCount">{this.props.remainingCharacters}/500</div>
+                    <div id="charCount">{this.props.remainingCharacters}/2000</div>
                     {this.props.inputText !== "" && <button className="clearTextBtn" 
                                                             onClick={this.props.clearText}
                                                     ><i className="fas fa-times"></i>

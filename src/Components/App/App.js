@@ -11,7 +11,7 @@ export class App extends React.Component {
                    outputText: "",
                    isCopied: false,
                    processingMethod: "",
-                   remainingCharacters: 500
+                   remainingCharacters: 2000
                 }
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -45,12 +45,13 @@ export class App extends React.Component {
                     outputText: "",
                     isCopied: false,
                     processingMethod: "",
-                    remainingCharacters: 500 
+                    remainingCharacters: 2000 
                   });
     document.getElementById("inputText").value = "";
     document.getElementById("convertedText").innerHTML = "";
     document.getElementById("processingMethods").value = "default";
     document.getElementById("charCount").style = "";
+    document.getElementById("inputText").style = "";
   }
 
   //Update state when the input value in the textarea changes
@@ -107,14 +108,27 @@ export class App extends React.Component {
 
   countRemainingChars(inputText) {
     const counter = inputText.length;
-    const remainingCharacters = 500 - counter;
+    const remainingCharacters = 2000 - counter;
     this.setState( {remainingCharacters: remainingCharacters})
     if (remainingCharacters <= 20) {
       document.getElementById("charCount").style.color = "red";
     } else {
       document.getElementById("charCount").style = "";
     }
-}
+  }
+
+  autoExpand(field) {
+    field.style.height = 'inherit';
+	  const computed = window.getComputedStyle(field);
+    let height = parseInt(computed.getPropertyValue('border-top-width'), 10)
+                + parseInt(computed.getPropertyValue('padding-top'), 10)
+                + field.scrollHeight
+                + parseInt(computed.getPropertyValue('padding-bottom'), 10)
+                + parseInt(computed.getPropertyValue('border-bottom-width'), 10);
+    field.style.height = height + 'px';
+  }
+
+
 
   render() {
     return (
@@ -125,7 +139,8 @@ export class App extends React.Component {
                   clearText={this.clearText.bind(this)}
                   handleInputText={this.handleTextAreaChange.bind(this)}
                   countRemainingChars={this.countRemainingChars.bind(this)}
-                  remainingCharacters={this.state.remainingCharacters}         
+                  remainingCharacters={this.state.remainingCharacters}  
+                  autoExpand={this.autoExpand.bind(this)}   
         />
         <br></br>
         <label htmlFor="processingMethods">Choose how to process the text:</label>
