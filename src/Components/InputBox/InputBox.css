@@ -4,7 +4,8 @@
     margin: 0 auto;
     display: flex;
     justify-content: left;
-  
+    position: relative;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
   
   textarea {
@@ -21,4 +22,12 @@
   
   textarea:focus {
     border-color: transparent; 
+  }
+
+  #charCount {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    color: #5F6368;
+    font-size: 13px;
   }
