@@ -20,7 +20,7 @@ label {
   color: #e5e5e5;
 }
 
-.clearTextBtn {
+.clearTextBtn, .copyBtn {
   height: 40px;
   font-size: 20px;
   border-radius: 50%;
@@ -32,17 +32,15 @@ label {
 }
 
 .clearTextBtn:hover,
-.clearTextBtn:active {
+.clearTextBtn:active,
+.copyBtn:hover,
+.copyBtn:active {
   background-color: #F5F5F5;
   color: #5F6368;
 }
 
 button {
   font-family: Poppins, sans-serif;
-  background-color: #80ED99;
-  color: black;
-  border-radius: 4px;
-  padding: 10px 13px;
   border: none;
   outline: none;
   cursor: pointer;
@@ -51,9 +49,42 @@ button {
 button:active,
 button:focus,
 button:hover {
-  background-color: #38A3A5;
-  color: white;
   transition: all 750ms;
+}
+
+#copied {
+  color: black;
+  background-color: #fca311;
+  padding: 10px;
+  width: 150px;
+  border-radius: 4px;
+  font-family: Poppins, sans-serif;
+  font-size: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  animation: floatup 3s ease forwards;
+  transition: all 750s ;
+  box-shadow: 7px 7px 5px 0px black;
+}
+
+@keyframes floatup {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  20% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
 }
 
 
