@@ -1,0 +1,24 @@
+.textBox {
+    width: 600px;
+    background-color: white;
+    margin: 0 auto;
+    display: flex;
+    justify-content: left;
+  
+  }
+  
+  textarea {
+    resize: none;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: white;
+    outline: none;
+    padding: 8px;
+    font-size: 16px;
+    border-color: transparent; 
+    width: 550px;
+    min-height: 120px;
+  }
+  
+  textarea:focus {
+    border-color: transparent; 
+  }
