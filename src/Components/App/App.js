@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { InputBox } from "../InputBox/InputBox";
 import { SelectBox } from "../SelectBox/SelectBox";
+import { OutputBox } from "../OutputBox/OutputBox";
 
 export class App extends React.Component {
   constructor(props) {
@@ -88,13 +89,16 @@ export class App extends React.Component {
         <label htmlFor="processingMethods">Choose how to process the text:</label>
         <SelectBox updateSelect={this.handleSelectChange.bind(this)}/>
 
-        <form className="textBox">
+        {/* <form className="textBox">
           <p id="convertedText"></p>
           {this.state.outputText !== "" && <button onClick={this.clearText.bind(this)} 
                                                    className="clearTextBtn" 
                                             ><i className="fas fa-times"></i>
                                             </button>}
-        </form>        
+        </form>         */}
+        <OutputBox  outputText={this.state.outputText} 
+                    clearText={this.clearText.bind(this)}
+        />
       </div>
     );
   }

@@ -1,0 +1,11 @@
+#convertedText {
+    display: block;
+    background-color: white;
+    width: 550px;
+    text-align: left;
+    padding: 8px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+    min-height: 120px;
+    cursor: text;
+  }
