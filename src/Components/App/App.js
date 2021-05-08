@@ -4,6 +4,7 @@ import { InputBox } from "../InputBox/InputBox";
 import { SelectBox } from "../SelectBox/SelectBox";
 import { OutputBox } from "../OutputBox/OutputBox";
 
+const optionBtns = document.getElementsByClassName("option");
 export class App extends React.Component {
   constructor(props) {
     super(props);
@@ -11,11 +12,53 @@ export class App extends React.Component {
                    outputText: "",
                    isCopied: false,
                    processingMethod: "",
-                   remainingCharacters: 2000
+                   remainingCharacters: 2000,
+                   isDisplayed: false
                 }
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    window.addEventListener('load', this.handleLoad);  
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("load", this.handleLoad);
+  }
+
+  handleLoad() {
+    setTimeout(() => {
+      document.getElementById("prompt-text").className = "notVisible";
+      document.getElementById("input-tooltip").className = "isVisible";
+      document.getElementById("input-container").style.zIndex = "40";
+    }, 2500);
+
+    setTimeout(() => {
+      document.getElementById("input-container").style = "";
+      document.getElementById("select-tooltip").style.zIndex = "40";
+      document.getElementById("select-container").style.zIndex = "40";
+      document.getElementById("input-tooltip").className = "notVisible";
+      document.getElementById("select-tooltip").className = "isVisible";
+    }, 4500);
+
+    setTimeout(() => {
+      document.getElementById("select-tooltip").style = "";
+      document.getElementById("select-tooltip").className = "notVisible";
+      for (let i = 0; i < optionBtns.length; i++) {
+        optionBtns[i].classList.remove("notVisible");
+        optionBtns[i].classList.add("tutorial");
+      }  
+    }, 6500);
+
+    setTimeout(() => {
+      for (let i = 0; i < optionBtns.length; i++) {
+        optionBtns[i].classList.remove("tutorial");
+        optionBtns[i].classList.add("notVisible");
+        document.getElementById("prompt").style.display = "none";
+      }
+    }, 9500);
+
+  }
   //a call-back function that handles submittion when Select is changed 
   handleSubmit() {
     return document.getElementById("convertedText").innerHTML = this.state.outputText;
@@ -45,22 +88,70 @@ export class App extends React.Component {
                     outputText: "",
                     isCopied: false,
                     processingMethod: "",
-                    remainingCharacters: 2000 
+                    remainingCharacters: 2000,
+                    isDisplayed: false 
                   });
     document.getElementById("inputText").value = "";
     document.getElementById("convertedText").innerHTML = "";
-    document.getElementById("processingMethods").value = "default";
     document.getElementById("charCount").style = "";
     document.getElementById("inputText").style = "";
+    document.getElementById("input_clear_btn").classList.add("notVisible");
+  }
+
+  showDisplay() {    
+    for (let i = 0; i < optionBtns.length; i++) {
+      optionBtns[i].classList.remove("notVisible");
+      optionBtns[i].classList.add("isVisible");
+    }
+  }
+
+  hideDisplay() {
+    for (let i = 0; i < optionBtns.length; i++) {
+      optionBtns[i].classList.remove("isVisible");
+      optionBtns[i].classList.add("notVisible");
+    }
+  }
+
+  componentDidUpdate(prevState) {
+    if (this.state.isDisplayed !== prevState.isDisplayed) {
+      this.state.isDisplayed ? this.showDisplay() : this.hideDisplay();
+    }   
+    if (this.state.outputText !== prevState.outputText) {
+      if (this.state.outputText) {
+          document.getElementById("output-clear-btn").classList.add("isVisible");
+          document.getElementById("output-clear-btn").classList.remove("notVisible");
+          document.getElementById("copyBtn").classList.add("isVisible");
+          document.getElementById("copyBtn").classList.remove("notVisible");
+      } else {
+          document.getElementById("output-clear-btn").classList.remove("isVisible");
+          document.getElementById("output-clear-btn").classList.add("notVisible");
+          document.getElementById("copyBtn").classList.remove("isVisible");
+          document.getElementById("copyBtn").classList.add("notVisible");
+        }
+      }      
+  }
+
+  toggleDisplay() {
+    this.setState( { isDisplayed: !this.state.isDisplayed });
   }
 
   //Update state when the input value in the textarea changes
   handleTextAreaChange(inputText) {
-    this.setState({ inputText: inputText 
-                   });
+    this.setState({ inputText: inputText });
     if (this.state.isCopied) {
-      this.setState({isCopied: false})
+      this.setState({ isCopied: false })
     };
+
+    if (inputText) {
+      this.setState({ isDisplayed : true });
+      document.getElementById("input_clear_btn").classList.remove("notVisible");
+      document.getElementById("input_clear_btn").classList.add("isVisible");
+    } else {
+      this.setState({ isDisplayed : false });
+      document.getElementById("input_clear_btn").classList.remove("isVisible");
+      document.getElementById("input_clear_btn").classList.add("notVisible");
+    }
+
     if (this.state.processingMethod === "lowercase") {
       const convertedText = inputText.toLowerCase();
       this.setState({ outputText: convertedText });
@@ -74,28 +165,27 @@ export class App extends React.Component {
                                       .join(" ");
       this.setState({ outputText: convertedText });
     }
+
     document.getElementById("convertedText").innerHTML = this.state.outputText;
   }
 
   //handles changes of Select
-  handleSelectChange(newInput) {
+  handleSelectChange(methodName) {
     if (this.state.inputText === "") {
       alert("The input box is empty");
-      document.getElementById("processingMethods").value = "default";
-    }
-    if (this.state.inputText !== "" && document.getElementById("processingMethods").value === "default") {
-      alert("Please choose a valid processing method");
-    } 
-    else {
-      switch(newInput) {
+    } else {
+      switch(methodName) {
         case "lowercase":
           this.toLowerCase();
+          this.setState( { isDisplayed : false });
           break;
         case "uppercase":
           this.toUpperCase();
+          this.setState( { isDisplayed : false });
           break;
         case "capitalise": 
           this.capitalizeEachWord();
+          this.setState( { isDisplayed : false });
           break;
       }      
     }   
@@ -117,41 +207,78 @@ export class App extends React.Component {
     }
   }
 
-  autoExpand(field) {
-    field.style.height = 'inherit';
-	  const computed = window.getComputedStyle(field);
-    let height = parseInt(computed.getPropertyValue('border-top-width'), 10)
-                + parseInt(computed.getPropertyValue('padding-top'), 10)
-                + field.scrollHeight
-                + parseInt(computed.getPropertyValue('padding-bottom'), 10)
-                + parseInt(computed.getPropertyValue('border-bottom-width'), 10);
-    field.style.height = height + 'px';
-  }
-
-
+  // autoExpand(field) {
+  //   field.style.height = 'inherit';
+	//   const computed = window.getComputedStyle(field);
+  //   let height = parseInt(computed.getPropertyValue('border-top-width'), 10)
+  //               + parseInt(computed.getPropertyValue('padding-top'), 10)
+  //               + field.scrollHeight
+  //               + parseInt(computed.getPropertyValue('padding-bottom'), 10)
+  //               + parseInt(computed.getPropertyValue('border-bottom-width'), 10);
+  //   field.style.height = height + 'px';
+  // }
 
   render() {
     return (
       <div className="App">
-        <label htmlFor="inputText">Paste or type your text below:</label>
-        <br></br>
-        <InputBox inputText={this.state.inputText} 
-                  clearText={this.clearText.bind(this)}
-                  handleInputText={this.handleTextAreaChange.bind(this)}
-                  countRemainingChars={this.countRemainingChars.bind(this)}
-                  remainingCharacters={this.state.remainingCharacters}  
-                  autoExpand={this.autoExpand.bind(this)}   
+        <div id="prompt">
+          <h1 
+            id="prompt-text"
+            >Hey, let's take a little tour!
+            </h1>
+        </div>
+        <div 
+          className="container" 
+          id="input-container"
+          >
+          <label 
+            htmlFor="inputText"
+            id="input-tooltip"
+            className="notVisible"
+            >Paste or type your text    
+            <i 
+              id="arrow-down" 
+              className="fas fa-long-arrow-alt-down"
+              ></i>
+          </label>
+          <InputBox 
+            inputText={this.state.inputText} 
+            clearText={this.clearText.bind(this)}
+            handleInputText={this.handleTextAreaChange.bind(this)}
+            countRemainingChars={this.countRemainingChars.bind(this)}
+            remainingCharacters={this.state.remainingCharacters}  
+            // autoExpand={this.autoExpand.bind(this)}   
+          />
+        </div>
+
+        <div 
+            id="select-tooltip"
+            className="notVisible"
+            >
+            Choose how you'd like to process your text
+            <i 
+              className="fas fa-long-arrow-alt-right"
+              id="arrow-right"
+              ></i>
+          </div>
+
+        <div 
+          className="container" 
+          id="select-container"
+          >
+          <SelectBox 
+            updateSelect={this.handleSelectChange.bind(this)}
+            toggleDisplay={this.toggleDisplay.bind(this)}
+          />
+        </div>
+
+        <OutputBox  
+          outputText={this.state.outputText} 
+          clearText={this.clearText.bind(this)}
+          copyText={this.copyText.bind(this)}                   
         />
-        <br></br>
-        <label htmlFor="processingMethods">Choose how to process the text:</label>
-        <SelectBox updateSelect={this.handleSelectChange.bind(this)}/>
-        <OutputBox  outputText={this.state.outputText} 
-                    clearText={this.clearText.bind(this)}
-                    copyText={this.copyText.bind(this)}
-                    
-        />
-        {this.state.isCopied && <p id="copied">Text copied</p>}
-       
+
+        {this.state.isCopied && <p id="copied">Text copied</p>}      
       </div>
     );
   }

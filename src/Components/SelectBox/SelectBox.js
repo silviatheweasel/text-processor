@@ -1,5 +1,4 @@
 import React from "react";
-import "./SelectBox.css"
 
 export class SelectBox extends React.Component {
     constructor(props) {
@@ -7,21 +6,37 @@ export class SelectBox extends React.Component {
     }
 
     handleChange(event) {
-        const newInput = event.target.value;
-        this.props.updateSelect(newInput);
+        const methodName = event.target.id;
+        this.props.updateSelect(methodName);
     }
 
-    render() {
-        return (<form className="selectBox">
-        <select name="processingMethods"
-                id="processingMethods"
-                onChange={this.handleChange.bind(this)}
-        >
-          <option value="default"> -- choose a processing method below --</option>
-          <option value="capitalise">Capitalise the First Letter of Each Word</option>
-          <option value="lowercase">convert the text to lower case</option>
-          <option value="uppercase">CONVERT THE TEXT TO UPPER CASE</option>
-        </select>
-      </form>);
+    render() {      
+      return (
+        <div className="selectBox">
+            <div 
+                className="option" 
+                id="capitalise"
+                onClick={this.handleChange.bind(this)}
+              >Abc
+            </div>
+            <div 
+                className="option" 
+                id="lowercase"
+                onClick={this.handleChange.bind(this)}
+              >abc
+            </div>
+            <div 
+                className="option" 
+                id="uppercase"
+                onClick={this.handleChange.bind(this)}
+            >ABC
+            </div>
+            <div 
+                id="default"
+                onClick={this.props.toggleDisplay}
+              >Choose a method
+            </div>
+        </div>
+      )
     }
 }
