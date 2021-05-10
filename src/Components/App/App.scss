@@ -18,6 +18,7 @@ $greenLeaf: #39603D;
     display: block;
     @extend %shadow;
     background: linear-gradient(145deg, #585a58, $brownGray);
+    -webkit-tap-highlight-color: transparent;
     &:hover, :focus, :active {
         background: linear-gradient(145deg, #292929, $brownGray);
         color: rgb(190, 189, 189);
@@ -31,6 +32,7 @@ $greenLeaf: #39603D;
     border: none;
     position: absolute;
     font-size: 16px;
+    -webkit-tap-highlight-color: transparent;
     cursor: pointer;
     &:hover, 
     &:focus,
@@ -42,7 +44,7 @@ $greenLeaf: #39603D;
 %tooltip {
     font-size: 14px;
     position: absolute;
-    width: 120px;
+    width: 100px;
     color: $tanly;
     transition: transform 1s ease;
     text-align: right;
@@ -58,11 +60,6 @@ $greenLeaf: #39603D;
     height: 100%;
     width: 100%;
 }
-
-// %not-visible {
-//     opacity: 0;
-//     transition: opacity 0.5s ease;
-// }
 
 @keyframes bouncing-up-down {
     from {
@@ -83,8 +80,24 @@ $greenLeaf: #39603D;
 }  
 
 @keyframes typing {
-    from { width: 0 };
-    to { width: 100% };
+    from { 
+        width: 0 
+    };
+    to { 
+        width: 100% 
+    };
+}
+
+@keyframes appear {
+    0% { 
+        opacity: 0; 
+    };
+    70% {
+        opacity: 1;
+    }; 
+    100% {
+        opacity: 0;
+    }
 }
 
 *  {
@@ -119,22 +132,33 @@ html {
                 width: 100%;
                 background-color: fade-out($color:  $brownGray, $amount: 0.5);
                 z-index: 30;
-                h1 {
-                    position: absolute;
-                    overflow: hidden; 
-                    font-size: 36px;
-                    white-space: nowrap;
-                    color: $tanly;
-                    margin: 0 auto;
-                    letter-spacing: .15em;
-                    top: 45%;
-                    left: 30%;
-                    animation: typing 3.5s steps(40, end) forwards;
-                    &.notVisible {
-                        opacity: 0;
-                        transition: opacity 0.5s ease;
+                #prompt-content {
+                    position: relative;
+                    top: 38%;
+                    left: 38%;
+                    span {
+                        position: absolute;
+                        overflow: hidden; 
+                        font-size: 45px;
+                        white-space: nowrap;
+                        color: $tanly;
+                        margin: 0 auto;
+                        letter-spacing: .15em;
+                        &.notVisible {
+                            opacity: 0;
+                            transition: opacity 0.5s ease;
+                        }
                     }
-                }
+                    #prompt-text-1 {
+                        animation: typing 3.5s steps(40, end) forwards;
+                    }
+                    #prompt-text-2 {
+                        animation: typing 3.5s steps(40, end) backwards;
+                        animation-delay: 1s;
+                        top: 70px;
+                        left: 20px;
+                    }
+                }              
             }
     
             #input-container {
@@ -142,6 +166,7 @@ html {
                 #input-tooltip {
                     font-size: 25px;
                     color: $tanly;
+                    position: absolute;
                     &.isVisible {
                         opacity: 1;
                         transition: opacity 1.5s ease;
@@ -152,7 +177,7 @@ html {
                     }
                     #arrow-down {
                         margin-left: 20px;
-                        animation: bouncing-up-down 0.5s 2.5s 3;
+                        animation: bouncing-up-down 0.5s 3s 3;
                     }
                 }
 
@@ -162,6 +187,7 @@ html {
                     margin-top: 30px;
                     position: relative;
                     padding: 50px;
+                    margin-top: 55px;
                     background-color: fade-out($color:  white, $amount: 0.5);
                     @extend %shadow;
                     #inputText {
@@ -208,25 +234,25 @@ html {
                 }
                 #arrow-right {
                     margin-left: 20px;
-                    animation: bouncing-left-right 0.5s 4.5s 3;
+                    animation: bouncing-left-right 0.5s 5s 3;
                 }
             }
+
             #select-container {
-                grid-area: 5 / 10 / span 2 / span 3;
+                grid-area: 6 / 10 / span 1 / span 3;
                 text-align: center;   
                 padding: 0;
                 margin: 0;
                 z-index: 20;
                 .selectBox {
-                    position: relative;
                     .option {
                         @include roundBtn(80px, 35px);
                         background-color: $greenLeaf;
                         color: white;
                         position: absolute;
                         padding: 30px 15px;
-                        right: 30px;
-                        top: 120px;
+                        right: 40px;
+                        bottom: 40px;
                     }
                     #capitalise {
                         &.isVisible {
@@ -243,15 +269,14 @@ html {
                             &::before {
                                 content: "Capitalises the first letter of each word";
                                 @extend %tooltip;
-                                transform: translate(-150px, -20px);
-                                transition: transform 1s ease;
+                                transform: translate(-130px, -20px);
                             }
                         }
                     }
 
                     #uppercase {
                         &.isVisible {
-                            transform: translateY(-150px);
+                            transform: translateY(-160px);
                             transition: transform 1s ease;
                         }
                         &.notVisible {
@@ -259,19 +284,18 @@ html {
                             transition: transform 1s ease;
                         }
                         &.tutorial {
-                            transform: translateY(-150px);
+                            transform: translateY(-160px);
                             transition: transform 1s ease;
                             &::before {
                                 content: "Capitalises each letter";
                                 @extend %tooltip;
-                                transform: translate(-150px,-30px);
-                                transition: transform 1s ease;
+                                transform: translate(-130px,-30px);
                             }
                         }
                     }
                     #lowercase {
                         &.isVisible {
-                            transform: translate(-110px, -110px);
+                            transform: translate(-115px, -115px);
                             transition: transform 1s ease;
                         }                      
                         &.notVisible {
@@ -279,13 +303,12 @@ html {
                             transition: transform 1s ease;
                         }
                         &.tutorial {
-                            transform: translate(-110px, -110px);
+                            transform: translate(-115px, -115px);
                             transition: transform 1s ease;
                             &::before {
                                 content: "Makes each letter lowercase";
                                 @extend %tooltip;
-                                transform: translate(-150px, -10px);
-                                transition: transform 1s ease;
+                                transform: translate(-130px, -20px);
                             }
                         }
                     }
@@ -297,18 +320,18 @@ html {
                         padding: 55px 30px;
                         color: white;
                         position: absolute;
-                        right: 0;
-                        top: 80px;
+                        right: 10px;
+                        bottom: 10px;
                     }
                 }
             }
 
             #output-container {
                 grid-area: 1 / 7 / span 6 / span 6;
-                margin-top: 55px;
                 #text-container {
                     height: 60vh;
                     padding: 50px;
+                    margin-top: 55px;
                     width: 100%;
                     background-color: fade-out($color:  #A3BCB6, $amount: 0.5);
                     @extend %shadow;
@@ -357,6 +380,197 @@ html {
                     }
                 }
             }
+            #alert {
+                grid-area: 1 / 5 / span 1 / span 4;
+                background-color: $greenLeaf;
+                color: $tanly;
+                padding: 50px 40px;
+                @extend %shadow;
+                border-radius: 0 0 30px 30px;
+                &.isVisible {
+                    opacity: 1;
+                    z-index: 40;
+                }
+                &.notVisible {
+                    opacity: 0;
+                    z-index: -10;
+                }
+                #alert-text {
+                    line-height: 25px;
+                }
+                #dismiss-btn {
+                    padding: 10px 20px;
+                    border-radius: 30px;
+                    border: none;
+                    outline: none;
+                    color: $brownGray;
+                    margin-top: 30px;
+                    float: right;
+                    background: linear-gradient(145deg, $tanly, #b8bdb1);
+                    cursor: pointer;
+                    -webkit-tap-highlight-color: transparent;
+                    @extend %shadow;
+                    &:hover, :focus, :active {
+                        background: linear-gradient(145deg, #b1b0b0, #b8bdb1);
+                        color: #2b2e2c;
+                    }
+                }
+            }
+            #copied {
+                grid-area: 6 / 1 / span 1 / span 3;
+                position: absolute;
+                bottom: 10px;
+                width: 130px;
+                height: 60px;
+                padding: 20px;
+                border-radius: 0 30px 0 0;
+                background-color: $greenLeaf;
+                color: $tanly;
+                animation: appear 3s ease forwards;
+                @extend %shadow;
+            }
         }       
     }
+}
+
+@media only screen and (max-width: 1050px) {
+    #prompt {
+        #prompt-content {
+            left: 30% !important;
+            #prompt-text-2 {
+                animation-delay: 1s !important;
+            }
+        }
+    }
+    #select-tooltip {
+        margin-top: 90px !important;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    #prompt {
+        #prompt-content {
+            #prompt-text-2 {
+                animation-delay: 1.5s !important;
+            }
+        }
+    }
+
+    .container,
+    #text-container,
+    #textBox {
+        padding: 20px 20px 50px 20px !important;
+    }
+
+    #input-container {
+        grid-area: 1 / 1 / span 6 / span 6 !important;
+    }
+
+    #alert {
+        grid-area: 1 / 4 / span 1 / span 6 !important;
+    }
+
+}
+
+@media only screen and (max-width: 420px) {
+    #input-container {
+        grid-area: 1 / 1 / span 2 / span 12 !important;
+        height: 40vh !important;
+        margin-top: 30px !important;
+        #input-tooltip {
+            font-size: 20px !important;
+            top: 10px;
+            left: 10px;
+        }
+        #textBox {
+            height: 100% !important;   
+            margin-top: 0 !important;     
+        }       
+    }
+    #output-container {
+        grid-area: 3 / 1 / span 2 / span 12 !important;
+        height: 40vh !important;
+        margin-top: 30px !important;
+        #text-container {
+            height: 100% !important;
+            margin-top: 0 !important;     
+        }
+    }
+    #alert {
+        grid-area: 1 / 1 / span 1 / span 12 !important;
+        padding: 20px !important;
+    }
+    #select-tooltip {
+        grid-area: 6 / 1 / span 1 / span 6 !important;
+        font-size: 20px !important;
+    }
+    .option {
+        right: 30px !important;
+        bottom: 25px !important;
+    }
+    #capitalise {
+        &.isVisible {
+            transform: translateX(-110px) !important;
+        }
+        &.tutorial {
+            transform: translateX(-110px) !important;
+            &::before {
+                transform: translate(-130px, -20px) !important;
+            }
+        }
+    }
+    #uppercase {
+        &.isVisible {
+            transform: translateY(-110px) !important;
+        }
+        &.tutorial {
+            transform: translateY(-110px) !important;
+            &::before {
+                transform: translate(-130px,-35px) !important;
+            }
+        }
+    }
+    #lowercase {
+        &.isVisible {
+            transform: translate(-80px, -80px) !important;
+        }                      
+        &.tutorial {
+            transform: translate(-80px, -80px) !important;
+            &::before {
+                transform: translate(-130px, -10px) !important;
+            }
+        }
+    }
+    #default {
+        height: 120px !important;
+        width: 120px !important;
+        padding: 30px !important;
+    }
+    #prompt {
+        #prompt-content {
+            left: 10% !important;
+            span {
+                font-size: 30px !important; 
+                animation-duration: 2.5s !important;           
+            }
+            #prompt-text-2 {
+                animation-delay: 1.5s !important;
+                left: 0 !important;
+                top: 40px !important;
+            }
+        }
+
+    }
+
+    #arrow-down, 
+    #arrow-right {
+        margin-left: 5px !important;
+    }
+
+    .tutorial {
+        &::before {
+            word-wrap: break-word !important;
+        }
+    }
+
 }

@@ -28,10 +28,11 @@ export class App extends React.Component {
 
   handleLoad() {
     setTimeout(() => {
-      document.getElementById("prompt-text").className = "notVisible";
+      document.getElementById("prompt-text-1").className = "notVisible";
+      document.getElementById("prompt-text-2").className = "notVisible";
       document.getElementById("input-tooltip").className = "isVisible";
       document.getElementById("input-container").style.zIndex = "40";
-    }, 2500);
+    }, 3000);
 
     setTimeout(() => {
       document.getElementById("input-container").style = "";
@@ -39,7 +40,7 @@ export class App extends React.Component {
       document.getElementById("select-container").style.zIndex = "40";
       document.getElementById("input-tooltip").className = "notVisible";
       document.getElementById("select-tooltip").className = "isVisible";
-    }, 4500);
+    }, 5000);
 
     setTimeout(() => {
       document.getElementById("select-tooltip").style = "";
@@ -48,7 +49,7 @@ export class App extends React.Component {
         optionBtns[i].classList.remove("notVisible");
         optionBtns[i].classList.add("tutorial");
       }  
-    }, 6500);
+    }, 7000);
 
     setTimeout(() => {
       for (let i = 0; i < optionBtns.length; i++) {
@@ -56,7 +57,7 @@ export class App extends React.Component {
         optionBtns[i].classList.add("notVisible");
         document.getElementById("prompt").style.display = "none";
       }
-    }, 9500);
+    }, 10000);
 
   }
   //a call-back function that handles submittion when Select is changed 
@@ -172,7 +173,7 @@ export class App extends React.Component {
   //handles changes of Select
   handleSelectChange(methodName) {
     if (this.state.inputText === "") {
-      alert("The input box is empty");
+      document.getElementById("alert").className = "isVisible";
     } else {
       switch(methodName) {
         case "lowercase":
@@ -222,10 +223,20 @@ export class App extends React.Component {
     return (
       <div className="App">
         <div id="prompt">
-          <h1 
+          {/* <h1 
             id="prompt-text"
             >Hey, let's take a little tour!
-            </h1>
+            </h1> */}
+            <div id="prompt-content">
+              <span 
+                id="prompt-text-1" 
+                >Hey, let's take 
+              </span>
+              <span 
+                id="prompt-text-2" 
+                >a little tour!
+              </span>
+            </div>
         </div>
         <div 
           className="container" 
@@ -278,7 +289,20 @@ export class App extends React.Component {
           copyText={this.copyText.bind(this)}                   
         />
 
-        {this.state.isCopied && <p id="copied">Text copied</p>}      
+        <div id="alert" className="notVisible">
+          <p id="alert-text">Psss...Did you forget to leave something in the input box?</p>
+          <button 
+            id="dismiss-btn"
+            onClick={() => document.getElementById("alert").className = "notVisible"}
+            >Dissmiss</button>
+        </div>
+
+        {this.state.isCopied && 
+        <p 
+          id="copied"
+          >
+            Text copied
+          </p>}      
       </div>
     );
   }

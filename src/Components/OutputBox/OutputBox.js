@@ -25,7 +25,7 @@ export class OutputBox extends React.Component {
                             onClick={this.props.copyText}
                             id="copyBtn"
                         >
-                            <i class="far fa-copy"></i>
+                            <i className="far fa-copy"></i>
                         </button>
                     </div>                
                  </div>);
