@@ -1,5 +1,5 @@
 import React from "react";
-import "./OutputBox.css";
+// import "./OutputBox.css";
 
 export class OutputBox extends React.Component {
     constructor(props) {
@@ -7,18 +7,26 @@ export class OutputBox extends React.Component {
     }
 
     render() {
-        return (<div className="textBox">
-                    <p id="convertedText"></p>
-                    <div>
-                        {this.props.outputText !== "" && <button onClick={this.props.clearText} 
-                                                                 className="clearTextBtn" 
+        return (<div className="container" id="output-container">
+                    <div id="text-container">
+                        <div id="inner-container">
+                            <p id="convertedText"></p>
+                        </div>                        
+                    </div>
+                    <div id="btn-container">
+                        <button 
+                            onClick={this.props.clearText} 
+                            className="clearTextBtn"
+                            id="output-clear-btn" 
                         ><i className="fas fa-times"></i>
-                        </button>}
+                        </button>
                         
-                        {this.props.outputText !== "" && <button onClick={this.props.copyText}
-                                                                 className="copyBtn"
-                        ><i class="far fa-copy"></i>
-                         </button>}
+                        <button 
+                            onClick={this.props.copyText}
+                            id="copyBtn"
+                        >
+                            <i className="far fa-copy"></i>
+                        </button>
                     </div>                
                  </div>);
     }
