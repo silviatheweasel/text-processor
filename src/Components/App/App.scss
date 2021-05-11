@@ -112,8 +112,9 @@ html {
     color: $brownGray;
     font-size: 16px;
     font-family: Poppins, sans-serif;
-    // height: 100vh;
-    // overflow: hidden;
+    height: 100vh;
+    max-height: -webkit-fill-available;
+    overflow: hidden;
     body {
         .App {
             width: 100%;
@@ -132,6 +133,7 @@ html {
                 height: 100%;
                 width: 100%;
                 overflow: hidden;
+                min-height: -webkit-fill-available;
                 left: 0;
                 top: 0;
                 background-color: fade-out($color:  $greenLeaf, $amount: 0.2);
